@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="AI,Deep learning,CNN," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="全连接神经网络最大问题是参数爆炸，容易影响计算速度和导致过拟合问题。而CNN则通过局部连接、权值共享等方法避免了这一难题。">
+<meta name="keywords" content="AI,Deep learning,CNN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="卷积神经网络CNN入门">
+<meta property="og:url" content="http://laphiler.com/2017/12/20/CNN_startup/index.html">
+<meta property="og:site_name" content="Laphiler">
+<meta property="og:description" content="全连接神经网络最大问题是参数爆炸，容易影响计算速度和导致过拟合问题。而CNN则通过局部连接、权值共享等方法避免了这一难题。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_startup%2Fcnn_struct.jpg?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2017-12-20T08%3A13%3A08Z%2F-1%2Fhost%2Ff5b2ebb781f1e557b33cf2299168e5377e053f3c2fd2fffa909ad73c8566b6f2">
+<meta property="og:updated_time" content="2017-12-20T11:11:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="卷积神经网络CNN入门">
+<meta name="twitter:description" content="全连接神经网络最大问题是参数爆炸，容易影响计算速度和导致过拟合问题。而CNN则通过局部连接、权值共享等方法避免了这一难题。">
+<meta name="twitter:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_startup%2Fcnn_struct.jpg?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2017-12-20T08%3A13%3A08Z%2F-1%2Fhost%2Ff5b2ebb781f1e557b33cf2299168e5377e053f3c2fd2fffa909ad73c8566b6f2">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://laphiler.com/2017/12/20/CNN_startup/"/>
+
+
+
+
+
+  <title>卷积神经网络CNN入门 | Laphiler</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Laphiler</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Wars come and go, but my soldiers stay eternal.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://laphiler.com/2017/12/20/CNN_startup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Laphiler Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/laphiler.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Laphiler">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">卷积神经网络CNN入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-20T19:11:18+08:00">
+                2017-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>全连接神经网络最大问题是参数爆炸，容易影响计算速度和导致过拟合问题。而CNN则通过局部连接、权值共享等方法避免了这一难题。</p>
+<a id="more"></a>
+<h3 id="CNN-一般架构"><a href="#CNN-一般架构" class="headerlink" title="CNN 一般架构"></a>CNN 一般架构</h3><p><img src="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_startup%2Fcnn_struct.jpg?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2017-12-20T08%3A13%3A08Z%2F-1%2Fhost%2Ff5b2ebb781f1e557b33cf2299168e5377e053f3c2fd2fffa909ad73c8566b6f2" alt=""></p>
+<h3 id="输入层"><a href="#输入层" class="headerlink" title="输入层"></a>输入层</h3><p>CNN通过每层不同的网络结构，将上一层的输出转化为下一层输入。</p>
+<h3 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h3><p><strong>卷积核</strong>：卷积层的过滤器(filter)或者叫内核(kernel)既<strong>卷积核</strong>，可以将当前层神经网络上的一个子节点矩阵转化为下一层神经网络上的一个单位节点矩阵。<br>卷积核的尺寸(size)或者长和宽是用人工指定的，常用的卷积核尺寸有3x3或者5x5，而卷积核处理的矩阵深度就是当前层神经网络节点的深度，顾不需要人工指定。而卷积核的深度指的是处理得到的单位矩阵的深度。</p>
+<blockquote>
+<p>卷积核的尺寸指的是输入节点矩阵的大小(例5x5)，卷积核的深度指的是输出单位矩阵的深度(例1x1xZ).</p>
+</blockquote>
+<p><strong>前向传播算法</strong>:<br>卷积核前向传播过程就是用左侧矩阵中的节点通过激活函数(比如ReLU)计算出右侧单位矩阵中节点的过程。</p>
+<h3 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h3><p>在卷积层之间往往会加上一个池化层(pooling layer)，来缩小矩阵的尺寸，从而减少最后全连接层中的参数。池化层既可以加快计算速度，也有防止过拟合的作用。<br>池化层的计算：池化层的前向传播过程也是通过类似卷积核的结构完成的，但是卷积核中的计算不是节点的加权和，而是通过简单的最大值或者平均值运算，相应的称为最大池化层(max pooling)和平均池化层(average pooling)。实践中，池化层的应用较少。</p>
+<h3 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h3><p>经过多层卷积层和池化层处理，可以理解图像中的信息被抽象出信息含量更高的特征，待特征提取完后，CNN最后一般会通过1到2个全连接层给出分类结果。<br>如何网络接受任意的输入？<br>有些时候需要把全连接层变成卷积层，这就是所谓的<strong>卷积化</strong>。这里需要证明卷积化的等价性。直观上理解，卷积跟全连接都是一个点乘的操作，区别在于卷积是作用在一个局部的区域，而全连接是对于整个输入而言，那么只要把卷积作用的区域扩大为整个输入，那就变成全连接了。所以我们只需要把卷积核变成跟输入的一个map的大小一样就可以了，这样的话就相当于使得卷积跟全连接层的参数一样多。举个例子，比如 AlexNet，fc6 的输入是 256x6x6，那么这时候只需要把 fc6 变成是卷积核为6x6的卷积层就好了。</p>
+<p>与传统神经网络相比，CNN 参数和计算量更多还是更少了？<br>参数变少了，因为都使用一套参数，而计算量却是变大了，因为卷积窗口要滑到不同的地方，进行计算、合并等操作。</p>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><p>提高泛化能力（减少 overfit）</p>
+<ol>
+<li>增加神经网络层数。使用卷积层极大地减小了全连接层中的参数的数目，使学习的问题更容易</li>
+<li>使用更多强有力的规范化技术（尤其是 dropout 和 regularization）来减小过度拟合</li>
+<li>使用修正线性单元而不是 S 型神经元，来加速训练-依据经验，通常是3-5倍</li>
+<li>使用 GPU 来计算</li>
+<li>利用充分大的数据集，避免过拟合</li>
+<li>使用正确的代价函数，避免学习减速</li>
+<li>使用好的权重初始化，避免因为神经元饱和引起的学习减速</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AI/" rel="tag"># AI</a>
+          
+            <a href="/tags/Deep-learning/" rel="tag"># Deep learning</a>
+          
+            <a href="/tags/CNN/" rel="tag"># CNN</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/20/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/laphiler.png"
+                alt="Laphiler Zhang" />
+            
+              <p class="site-author-name" itemprop="name">Laphiler Zhang</p>
+              <p class="site-description motion-element" itemprop="description">Wars come and go, but my soldiers stay eternal.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/laphiler" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CNN-一般架构"><span class="nav-number">1.</span> <span class="nav-text">CNN 一般架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入层"><span class="nav-number">2.</span> <span class="nav-text">输入层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卷积层"><span class="nav-number">3.</span> <span class="nav-text">卷积层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#池化层"><span class="nav-number">4.</span> <span class="nav-text">池化层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全连接层"><span class="nav-number">5.</span> <span class="nav-text">全连接层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化"><span class="nav-number">6.</span> <span class="nav-text">优化</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Laphiler Zhang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v="></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v="></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v="></script>
+<script type="text/javascript" src="/js/src/post-details.js?v="></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v="></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
