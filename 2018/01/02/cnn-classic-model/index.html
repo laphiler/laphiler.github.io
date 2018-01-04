@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="CNN,Deep learning," />
+  <meta name="keywords" content="Deep learning,CNN," />
 
 
 
@@ -82,7 +82,7 @@
 
 
 <meta name="description" content="本文涉及以下CNN经典模型附paper链接，LeNet、AlexNet、VGGNet、GoogleNet、ResNet、RCNN、Fast R-CNN、Faster R-CNN、YOLO。">
-<meta name="keywords" content="CNN,Deep learning">
+<meta name="keywords" content="Deep learning,CNN">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CNN-经典神经网络模型">
 <meta property="og:url" content="http://laphiler.com/2018/01/02/cnn-classic-model/index.html">
@@ -91,7 +91,8 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2FLeNet.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-02T12%3A31%3A07Z%2F-1%2Fhost%2Fdab6ce8ce33f1bb2c06afd5fc62fc991bcc814a71a7957b73490fdc31dd02184">
 <meta property="og:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2FAlexNet.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-02T12%3A51%3A36Z%2F-1%2Fhost%2F4b029f787bdf5d1bd15da5f6652247e3d38d9c870e1078b0f3bf83a7d352fdf8">
-<meta property="og:updated_time" content="2018-01-03T07:05:09.000Z">
+<meta property="og:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2FAlexNet_arch.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-03T08%3A43%3A20Z%2F-1%2Fhost%2Fd88f9621d1f6238555637b5f10122dc7b08c987c26e8888c99ed083bf6a517f2">
+<meta property="og:updated_time" content="2018-01-04T06:29:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CNN-经典神经网络模型">
 <meta name="twitter:description" content="本文涉及以下CNN经典模型附paper链接，LeNet、AlexNet、VGGNet、GoogleNet、ResNet、RCNN、Fast R-CNN、Faster R-CNN、YOLO。">
@@ -348,18 +349,133 @@
 <li>Faster R-CNN (2016) <a href="https://arxiv.org/abs/1506.01497" target="_blank" rel="noopener">Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks</a></li>
 <li>YOLO (2016) <a href="https://arxiv.org/abs/1506.02640" target="_blank" rel="noopener">You Only Look Once: Unified, Real-Time Object Detection</a></li>
 </ul>
+<p>本文要介绍的前几个模型都是ILSVRC竞赛历年的佼佼者，这里先来总览比较AlexNet、VGG、GoogLeNet、ResNet四个模型。见下表：</p>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>AlexNet</th>
+<th>VGG</th>
+<th>GoogleNet</th>
+<th>ResNet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>时间</td>
+<td>2012</td>
+<td>2014</td>
+<td>2014</td>
+<td>2015</td>
+</tr>
+<tr>
+<td>层数</td>
+<td>8</td>
+<td>19</td>
+<td>22</td>
+<td>152</td>
+</tr>
+<tr>
+<td>错误率</td>
+<td>16.4%</td>
+<td>7.3%</td>
+<td>6.7%</td>
+<td>3.57%</td>
+</tr>
+<tr>
+<td>Data Augmentation</td>
+<td>+</td>
+<td>+</td>
+<td>+</td>
+<td>+</td>
+</tr>
+<tr>
+<td>Inception(NIN)</td>
+<td>-</td>
+<td>-</td>
+<td>+</td>
+<td>-</td>
+</tr>
+<tr>
+<td>卷积层数</td>
+<td>5</td>
+<td>16</td>
+<td>21</td>
+<td>151</td>
+</tr>
+<tr>
+<td>卷积核大小</td>
+<td>11,5,3</td>
+<td>3</td>
+<td>7,1,3,5</td>
+<td>7,1,3,5</td>
+</tr>
+<tr>
+<td>全连接层数</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>全连接层大小</td>
+<td>4096,4096,1000</td>
+<td>4096,4096,1000</td>
+<td>1000</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>Dropout</td>
+<td>+</td>
+<td>+</td>
+<td>+</td>
+<td>+</td>
+</tr>
+<tr>
+<td>Local Response Normalization(LRN)</td>
+<td>+</td>
+<td>-</td>
+<td>+</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Batch Normalization</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>+</td>
+</tr>
+</tbody>
+</table>
 <h2 id="LeNet"><a href="#LeNet" class="headerlink" title="LeNet"></a>LeNet</h2><p>参考<a href="https://github.com/BVLC/caffe/blob/master/examples/mnist/lenet_train_test.prototxt" target="_blank" rel="noopener">Cafe LeNet的配置文件</a>，由两个卷积层，两个池化层，两个全连接层组成。</p>
 <ul>
+<li>Input: 32*32 </li>
 <li>kernel size：5*5</li>
 <li>stride: 1</li>
 <li>pooling: MAX</li>
 <li>Architecture: 2 conv, 2 pooling, 2 FC</li>
+<li>Output: 10 classes (0-9 probability)</li>
 </ul>
 <p>下图是类似的网络结构，和cafe的不完全一样，可以帮忙理解结构。</p>
 <p><img src="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2FLeNet.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-02T12%3A31%3A07Z%2F-1%2Fhost%2Fdab6ce8ce33f1bb2c06afd5fc62fc991bcc814a71a7957b73490fdc31dd02184" alt="Arch of LeNet-5"></p>
 <h2 id="AlexNet"><a href="#AlexNet" class="headerlink" title="AlexNet"></a>AlexNet</h2><p>2012年ImageNet比赛冠军的model，AlexNet以第一作者Alex命名。<a href="https://github.com/BVLC/caffe/blob/master/models/bvlc_alexnet/deploy.prototxt" target="_blank" rel="noopener">cafe的网络配置在此处</a>。<br>废话不说，先上一张经典的AlexNet网络结构的半截图（仔细看下，图的上半部分好像被截断了）。</p>
-<p><img src="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2FAlexNet.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-02T12%3A51%3A36Z%2F-1%2Fhost%2F4b029f787bdf5d1bd15da5f6652247e3d38d9c870e1078b0f3bf83a7d352fdf8" alt="Arch of AlexNet"></p>
-
+<p><img src="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2FAlexNet.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-02T12%3A51%3A36Z%2F-1%2Fhost%2F4b029f787bdf5d1bd15da5f6652247e3d38d9c870e1078b0f3bf83a7d352fdf8" alt="Arch of AlexNet"><br>AlexNet以Top-5的错误率为16.4%赢得ILSVRC 2012年的比赛。它做出了如下创新：</p>
+<ul>
+<li>首次使用ReLU作为CNN激活函数，解决了Sigmod激活函数的梯度弥散问题。</li>
+<li>使用Dropout随机丢弃部分神经元，可以避免模型的过拟合。AlexNet的最后几个全连接层使用了Dropout。</li>
+<li>使用重叠的最大池化，之前使用的都是平均池化。最大池化可以避免平均池化的模糊效果。同时，步长比卷积核的尺寸小，这样池化层的输出之间会有重叠，提升了特征的丰富性。</li>
+<li>提出了LRN层（局部相应一体化），对局部神经元的活动创建竞争机制，使得其中响应比较大的值变得相对较大，并抑制其他反馈较小的神经元，增强模型泛化能力。</li>
+<li>使用CUDA加速深度卷积网络的训练，使用了GPU的并行计算能力。</li>
+<li>数据增强，随机从256x256的原始图中截取224x224大小的区域，再做水平翻转，相当于增加了 (256−224)2×2=2048(256−224)2×2=2048 倍的数据量。仅靠原始的数据量，参数众多的CNN会陷入过拟合。预测时，取图片四个角和中间共5个位置，再加上翻转，共10个位置，对它们的预测结果求均值。</li>
+</ul>
+<p><strong>AlexNet结构图</strong>（换个视角）<br><img src="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2FAlexNet_arch.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-03T08%3A43%3A20Z%2F-1%2Fhost%2Fd88f9621d1f6238555637b5f10122dc7b08c987c26e8888c99ed083bf6a517f2" alt=""><br>卷积神经网络的结构并不是各个层的简单组合，它是由一个个“模块”有机组成的，在模块内部，各个层的排列是有讲究的。比如AlexNet的结构图，它是由八个模块组成的。<br><strong>模块1和模块2</strong>是CNN的前面部分</p>
+<pre><code>卷积-激活函数-池化-标准化 
+</code></pre><p>构成了一个基本计算模块，也可以说是一个卷积过程的<strong>标配</strong>，CNN的结构就是这样，从宏观的角度来看，就是一层卷积，一层降采样这样循环的，中间适当地插入一些函数来控制数值的范围，以便后续的循环计算。</p>
+<p><strong>模块3和模块4</strong>也是两个卷积过程，差别是少了降采样，原因就跟输入的尺寸有关，特征的数据量已经比较小了，所以没有降采样，这个都没有关系啦。</p>
+<p><strong>模块5</strong>也是一个卷积过程，和模块1，2一样。</p>
+<p><strong>模块6和模块7</strong>就是所谓的全连接层，全连接层就和人工神经网络的结构一样的，结点数超级多，连接线也超多，所以这儿引出了一个dropout层，来去除一部分没有足够激活的层。</p>
+<p><strong>模块8</strong>就是一个输出的结果，结合上softmax做出分类。有几类，输出几个结点，每个结点保存的是属于该类别的概率值。</p>
+<h2 id="VGGNet"><a href="#VGGNet" class="headerlink" title="VGGNet"></a>VGGNet</h2>
       
     </div>
     
@@ -376,9 +492,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/CNN/" rel="tag"># CNN</a>
-          
             <a href="/tags/Deep-learning/" rel="tag"># Deep learning</a>
+          
+            <a href="/tags/CNN/" rel="tag"># CNN</a>
           
         </div>
       
@@ -536,7 +652,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LeNet"><span class="nav-number">1.</span> <span class="nav-text">LeNet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AlexNet"><span class="nav-number">2.</span> <span class="nav-text">AlexNet</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LeNet"><span class="nav-number">1.</span> <span class="nav-text">LeNet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AlexNet"><span class="nav-number">2.</span> <span class="nav-text">AlexNet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VGGNet"><span class="nav-number">3.</span> <span class="nav-text">VGGNet</span></a></li></ol></div>
             
 
           </div>
