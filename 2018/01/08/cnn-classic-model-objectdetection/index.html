@@ -92,7 +92,10 @@
 <meta property="og:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Fobjectdetection.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T03%3A28%3A37Z%2F-1%2Fhost%2Fe7f44f8391d770384b75e978b9a46f7869588921a217da52eb422b026689f8c8">
 <meta property="og:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Fdpm1.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T11%3A44%3A43Z%2F-1%2Fhost%2Fca695a204e9ab2d29dffb25e77817071a68cd264599cc5ac7bc7dea545ea02e3">
 <meta property="og:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Fdpm2.jpg?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T13%3A17%3A11Z%2F-1%2Fhost%2Fc1dfd8a9b57efb71a92954a366fe0775f86baf5f1fa8f9583ce5f4b52245aa20">
-<meta property="og:updated_time" content="2018-01-10T13:20:35.000Z">
+<meta property="og:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Frcnn-all.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T14%3A19%3A57Z%2F-1%2Fhost%2F50a51fa9a92fb06549d12f0e9f120b64e4d828c2e54134bd15650ce2a9d0e6a9">
+<meta property="og:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Frcnn-arch.jpg?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T14%3A11%3A14Z%2F-1%2Fhost%2F0133cd43ee0874b8895f39e2c70207f566affb5b9a9b77790180cd046e9abaef">
+<meta property="og:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Frcnn-mAP.jpg?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T14%3A12%3A08Z%2F-1%2Fhost%2Ff197c6c654a565e63f7cf05ad401aa708af2c3d9557d6b061f6c4a4831d15d87">
+<meta property="og:updated_time" content="2018-01-10T14:21:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CNN经典神经网络模型 | 目标检测">
 <meta name="twitter:description" content="目标检测是计算机视觉领域一个经典问题，本文主要涉及该领域的经典模型：RCNN, Fast R-CNN, Faster R-CNN, YOLO，SSD。">
@@ -353,7 +356,7 @@
 <p>制作激励模板就相当于人为地设计一个卷积核，一个比较复杂的卷积核，拿这个卷积核与原图像进行卷积运算得到一幅特征图。比如拿一个静止站立的人的HOG特征形成的卷积核，与原图像的梯度图像进行一个卷积运算，那么目标区域就会被加密。如下图所示：<br><img src="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Fdpm1.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T11%3A44%3A43Z%2F-1%2Fhost%2Fca695a204e9ab2d29dffb25e77817071a68cd264599cc5ac7bc7dea545ea02e3" alt=""></p>
 <p>由于目标可能会形变，之前模型不能很好的适应复杂场景的探测，所以一个改进是各个部分单独考虑，对物体的不同部分单独进行学习，所以DPM把物体看成了多个组成部件(比如说人脸的鼻子，嘴巴等)，用部件间的关系来描述物体，这个特点非常符合自然界许多物体的非刚性特征。基本思路如下:</p>
 <ol>
-<li>产生多个模板，整体模板以及不同的局部模板；</li>
+<li>产生多个模板，整体模板(root filter)以及不同的局部模板(root filter)；</li>
 <li>拿这些不同的模板同输入图像“卷积”产生特征图；</li>
 <li>将这些特征图组合形成融合特征；</li>
 <li>对融合特征进行传统分类，回归得到目标位置。<br><img src="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Fdpm2.jpg?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T13%3A17%3A11Z%2F-1%2Fhost%2Fc1dfd8a9b57efb71a92954a366fe0775f86baf5f1fa8f9583ce5f4b52245aa20" alt=""></li>
@@ -363,6 +366,23 @@
 <li>性能一般</li>
 <li>激励特征人为设计，工作量大；这种方法不具有普适性，因为用来检测人的激励模板不能拿去检测小猫或者小狗，所以在每做一种物件的探测的时候，都需要人工来设计激励模板，为了获得比较好的探测效果，需要花大量时间去做一些设计，工作量很大。</li>
 <li>无法适应大幅度的旋转，稳定性很差；</li>
+</ol>
+<p><strong>总结：</strong><br>传统目标检测存在的两个主要问题：一个是基于滑动窗口的区域选择策略没有针对性，时间复杂度高，窗口冗余；二是手工设计的特征对于多样性的变化并没有很好的鲁棒性。</p>
+<p>先用<a href="http://shartoo.github.io/RCNN-series/" target="_blank" rel="noopener">一张图概览</a>R-CNN系列模型<br><img src="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Frcnn-all.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T14%3A19%3A57Z%2F-1%2Fhost%2F50a51fa9a92fb06549d12f0e9f120b64e4d828c2e54134bd15650ce2a9d0e6a9" alt=""></p>
+<h2 id="R-CNN-CVPR2014-TPAMI2015"><a href="#R-CNN-CVPR2014-TPAMI2015" class="headerlink" title="R-CNN (CVPR2014, TPAMI2015)"></a>R-CNN (CVPR2014, TPAMI2015)</h2><p><img src="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Frcnn-arch.jpg?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T14%3A11%3A14Z%2F-1%2Fhost%2F0133cd43ee0874b8895f39e2c70207f566affb5b9a9b77790180cd046e9abaef" alt=""><br>训练流程：</p>
+<ol>
+<li>输入测试图像</li>
+<li>利用selective search算法在图像中提取1-2k个左右的region proposal（候选区）。</li>
+<li>将每个region proposal缩放（warp）成227×227的大小并输入到CNN，将CNN的fc7层的输出作为特征。</li>
+<li>将每个region proposal提取到的CNN特征输入到SVM进行分类。</li>
+<li>边框回归（bounding-box regression)，边框回归是对region proposal进行纠正的线性回归算法，为了让region proposal提取到的窗口跟目标真实窗口更吻合。</li>
+</ol>
+<p><img src="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Frcnn-mAP.jpg?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T14%3A12%3A08Z%2F-1%2Fhost%2Ff197c6c654a565e63f7cf05ad401aa708af2c3d9557d6b061f6c4a4831d15d87" alt=""></p>
+<p><strong>小结</strong>：R-CNN在PASCAL VOC2007上的检测结果从DPM HSC的34.3%直接提升到了66%(mAP)。如此大的提升使我们看到了region proposal+CNN的巨大优势。 但是R-CNN框架也存在着很多问题:</p>
+<ol>
+<li>训练分为多个阶段，步骤繁琐: 微调网络+训练SVM+训练边框回归器</li>
+<li>训练耗时，占用磁盘空间大：5000张图像产生几百G的特征文件</li>
+<li>速度慢: 使用GPU, VGG16模型处理一张图像需要47s。</li>
 </ol>
 
       
@@ -553,7 +573,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#传统方法-DPM"><span class="nav-number">1.</span> <span class="nav-text">传统方法-DPM</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#传统方法-DPM"><span class="nav-number">1.</span> <span class="nav-text">传统方法-DPM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#R-CNN-CVPR2014-TPAMI2015"><span class="nav-number">2.</span> <span class="nav-text">R-CNN (CVPR2014, TPAMI2015)</span></a></li></ol></div>
             
 
           </div>
