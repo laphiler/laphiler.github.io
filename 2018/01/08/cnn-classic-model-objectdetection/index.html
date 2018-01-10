@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="AI,Deep learning,CNN,RCNN,Fast R-CNN,Faster R-CNN,YOLO,Object detection," />
 
 
 
@@ -81,16 +81,22 @@
 
 
 
-<meta name="description" content="Wars come and go, but my soldiers stay eternal.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Laphiler">
-<meta property="og:url" content="http://laphiler.com/index.html">
+<meta name="description" content="目标检测是计算机视觉领域一个经典问题，本文主要涉及该领域的经典模型：RCNN, Fast R-CNN, Faster R-CNN, YOLO，SSD。">
+<meta name="keywords" content="AI,Deep learning,CNN,RCNN,Fast R-CNN,Faster R-CNN,YOLO,Object detection">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CNN经典神经网络模型 | 目标检测">
+<meta property="og:url" content="http://laphiler.com/2018/01/08/cnn-classic-model-objectdetection/index.html">
 <meta property="og:site_name" content="Laphiler">
-<meta property="og:description" content="Wars come and go, but my soldiers stay eternal.">
+<meta property="og:description" content="目标检测是计算机视觉领域一个经典问题，本文主要涉及该领域的经典模型：RCNN, Fast R-CNN, Faster R-CNN, YOLO，SSD。">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Fobjectdetection.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T03%3A28%3A37Z%2F-1%2Fhost%2Fe7f44f8391d770384b75e978b9a46f7869588921a217da52eb422b026689f8c8">
+<meta property="og:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Fdpm1.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T11%3A44%3A43Z%2F-1%2Fhost%2Fca695a204e9ab2d29dffb25e77817071a68cd264599cc5ac7bc7dea545ea02e3">
+<meta property="og:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Fdpm2.jpg?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T13%3A17%3A11Z%2F-1%2Fhost%2Fc1dfd8a9b57efb71a92954a366fe0775f86baf5f1fa8f9583ce5f4b52245aa20">
+<meta property="og:updated_time" content="2018-01-10T13:20:35.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Laphiler">
-<meta name="twitter:description" content="Wars come and go, but my soldiers stay eternal.">
+<meta name="twitter:title" content="CNN经典神经网络模型 | 目标检测">
+<meta name="twitter:description" content="目标检测是计算机视觉领域一个经典问题，本文主要涉及该领域的经典模型：RCNN, Fast R-CNN, Faster R-CNN, YOLO，SSD。">
+<meta name="twitter:image" content="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Fobjectdetection.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T03%3A28%3A37Z%2F-1%2Fhost%2Fe7f44f8391d770384b75e978b9a46f7869588921a217da52eb422b026689f8c8">
 
 
 
@@ -120,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://laphiler.com/"/>
+  <link rel="canonical" href="http://laphiler.com/2018/01/08/cnn-classic-model-objectdetection/"/>
 
 
 
 
 
-  <title>Laphiler</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>CNN经典神经网络模型 | 目标检测 | Laphiler</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -145,8 +151,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left 
-  page-home">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -249,9 +254,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -281,9 +286,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/08/cnn-classic-model-objectdetection/" itemprop="url">CNN经典神经网络模型 | 目标检测</a></h1>
+          <h1 class="post-title" itemprop="name headline">CNN经典神经网络模型 | 目标检测</h1>
         
 
         <div class="post-meta">
@@ -333,284 +336,93 @@
       
 
       
-        
-          <p>目标检测是计算机视觉领域一个经典问题，本文主要涉及该领域的经典模型：RCNN, Fast R-CNN, Faster R-CNN, YOLO，SSD。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/08/cnn-classic-model-objectdetection/#more" rel="contents">
-              Read more &raquo;
-            </a>
+        <p>目标检测是计算机视觉领域一个经典问题，本文主要涉及该领域的经典模型：RCNN, Fast R-CNN, Faster R-CNN, YOLO，SSD。</p>
+<a id="more"></a>
+<ul>
+<li><a href="https://arxiv.org/abs/1311.2524" target="_blank" rel="noopener">RCNN - Rich feature hierarchies for accurate object detection and semantic segmentation</a> (2014) </li>
+<li><a href="https://arxiv.org/abs/1504.08083" target="_blank" rel="noopener">Fast R-CNN</a> (2015)</li>
+<li><a href="https://arxiv.org/abs/1506.01497" target="_blank" rel="noopener">Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks</a> (2016)</li>
+<li><a href="https://arxiv.org/abs/1506.02640" target="_blank" rel="noopener">YoLo - You Only Look Once: Unified, Real-Time Object Detection</a> (2016)</li>
+<li><a href="https://arxiv.org/abs/1512.02325" target="_blank" rel="noopener">SSD: Single Shot MultiBox Detector
+</a> (2016)</li>
+</ul>
+<p>从下图可以大概看到当前目标检测领域的研究路径，目标分类 -&gt; 目标分类+定位 -&gt; 目标检测 -&gt; 实例分隔，由简到难，由浅到深。当前的目标检测总的发展方向主要就是两条线，一条线是提高检测的精度、另一条线是提高检测的速度（<a href="https://www.zhihu.com/question/34223049/answer/160336559" target="_blank" rel="noopener">参考</a>）。<br><img src="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Fobjectdetection.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T03%3A28%3A37Z%2F-1%2Fhost%2Fe7f44f8391d770384b75e978b9a46f7869588921a217da52eb422b026689f8c8" alt=""></p>
+<p><strong>传统的目标检测方法</strong>一般分为<strong>三个阶段</strong>（其实DL的方法也大概是这三阶段）：首先在给定的图像上选择一些<strong>候选区域</strong>，然后对这些区域<strong>特征提取</strong>，最后使用训练的分类器进行<strong>目标分类</strong>。</p>
+<p><strong>1.候选区域</strong>：利用不同尺度的滑动窗口在图像上进行区域搜索，定位候选区域。这种策略虽然可以检测到所有可能出现的位置，但是时间复杂度太高，产生的冗余窗口太多，严重影响后续特征的提取和分类速度的性能。<br><strong>2.特征提取</strong>：对候选区域进行特征提取，如<strong>SIFT</strong>（尺度不变特征变换 ，Scale-invariant feature transform）和<strong>HOG</strong>（ 方向梯度直方图特征，Histogram of Oriented Gradient）等。<br><strong>3.目标分类</strong>：利用分类器进行分类识别，SVM，Adaboost等</p>
+<h2 id="传统方法-DPM"><a href="#传统方法-DPM" class="headerlink" title="传统方法-DPM"></a>传统方法-DPM</h2><p><strong>DPM算法思想</strong>：输入一幅图像，对图像提取图像特征，针对某个物件制作出相应的激励模板，在原始的图像滑动计算，得到该激励效果图，根据激励的分布，确定目标位置。</p>
+<p>制作激励模板就相当于人为地设计一个卷积核，一个比较复杂的卷积核，拿这个卷积核与原图像进行卷积运算得到一幅特征图。比如拿一个静止站立的人的HOG特征形成的卷积核，与原图像的梯度图像进行一个卷积运算，那么目标区域就会被加密。如下图所示：<br><img src="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Fdpm1.png?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T11%3A44%3A43Z%2F-1%2Fhost%2Fca695a204e9ab2d29dffb25e77817071a68cd264599cc5ac7bc7dea545ea02e3" alt=""></p>
+<p>由于目标可能会形变，之前模型不能很好的适应复杂场景的探测，所以一个改进是各个部分单独考虑，对物体的不同部分单独进行学习，所以DPM把物体看成了多个组成部件(比如说人脸的鼻子，嘴巴等)，用部件间的关系来描述物体，这个特点非常符合自然界许多物体的非刚性特征。基本思路如下:</p>
+<ol>
+<li>产生多个模板，整体模板以及不同的局部模板；</li>
+<li>拿这些不同的模板同输入图像“卷积”产生特征图；</li>
+<li>将这些特征图组合形成融合特征；</li>
+<li>对融合特征进行传统分类，回归得到目标位置。<br><img src="http://xiaoluban.bj.bcebos.com/laphiler%2FCNN_classic_model%2Fdpm2.jpg?authorization=bce-auth-v1%2F94767b1b37b14a259abca0d493cefafa%2F2018-01-10T13%3A17%3A11Z%2F-1%2Fhost%2Fc1dfd8a9b57efb71a92954a366fe0775f86baf5f1fa8f9583ce5f4b52245aa20" alt=""></li>
+</ol>
+<p><strong>DPM算法缺点</strong>：</p>
+<ol>
+<li>性能一般</li>
+<li>激励特征人为设计，工作量大；这种方法不具有普适性，因为用来检测人的激励模板不能拿去检测小猫或者小狗，所以在每做一种物件的探测的时候，都需要人工来设计激励模板，为了获得比较好的探测效果，需要花大量时间去做一些设计，工作量很大。</li>
+<li>无法适应大幅度的旋转，稳定性很差；</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AI/" rel="tag"># AI</a>
+          
+            <a href="/tags/Deep-learning/" rel="tag"># Deep learning</a>
+          
+            <a href="/tags/CNN/" rel="tag"># CNN</a>
+          
+            <a href="/tags/RCNN/" rel="tag"># RCNN</a>
+          
+            <a href="/tags/Fast-R-CNN/" rel="tag"># Fast R-CNN</a>
+          
+            <a href="/tags/Faster-R-CNN/" rel="tag"># Faster R-CNN</a>
+          
+            <a href="/tags/YOLO/" rel="tag"># YOLO</a>
+          
+            <a href="/tags/Object-detection/" rel="tag"># Object detection</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/02/cnn-classic-model/" rel="next" title="CNN经典神经网络模型">
+                <i class="fa fa-chevron-left"></i> CNN经典神经网络模型
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://laphiler.com/2018/01/02/cnn-classic-model/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Laphiler Zhang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/laphiler.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Laphiler">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/02/cnn-classic-model/" itemprop="url">CNN经典神经网络模型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+          <div class="post-nav-prev post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-02T19:08:03+08:00">
-                2018-01-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>本文涉及以下CNN经典模型，LeNet、AlexNet、VGGNet、GoogleNet、ResNet。下一篇涉及RCNN、Fast R-CNN、Faster R-CNN、YOLO。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/02/cnn-classic-model/#more" rel="contents">
-              Read more &raquo;
-            </a>
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://laphiler.com/2017/12/21/PaperNotes-Mask-R-CNN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Laphiler Zhang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/laphiler.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Laphiler">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/21/PaperNotes-Mask-R-CNN/" itemprop="url">论文笔记 - Mask R-CNN</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-21T16:48:45+08:00">
-                2017-12-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>论文地址如下<br><a href="https://arxiv.org/abs/1703.06870" target="_blank" rel="noopener">Mask R-CNN</a></p>
-<p>该论文号称提供了一个简单灵活的通用物体实例的分割framework，Mask R-CNN是基于Faster R-CNN改造的，增加了一个预测object mask的分支，这个mask可以理解为物体外形的轮廓。Msak R-CNN可以应用在人类动作姿势的评估。</p>
-<p>To be continued…</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -620,255 +432,11 @@
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://laphiler.com/2017/12/20/CNN_startup/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Laphiler Zhang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/laphiler.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Laphiler">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/20/CNN_startup/" itemprop="url">卷积神经网络CNN入门</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-20T19:08:03+08:00">
-                2017-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>全连接神经网络最大问题是参数爆炸，容易影响计算速度和导致过拟合问题。而CNN则通过局部连接、权值共享等方法避免了这一难题。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/20/CNN_startup/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-categories" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://laphiler.com/2017/12/20/math-defination-md/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Laphiler Zhang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/laphiler.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Laphiler">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/20/math-defination-md/" itemprop="url">深度学习常用的数学定义</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-20T10:53:42+08:00">
-                2017-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <span>$|a|&lt;1$</span><!-- Has MathJax -->
-<p>$$\frac{\partial u}{\partial t}<br>= h^2 \left( \frac{\partial^2 u}{\partial x^2} +<br>\frac{\partial^2 u}{\partial y^2} +<br>\frac{\partial^2 u}{\partial z^2}\right)$$</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -876,6 +444,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -896,8 +468,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -962,6 +543,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#传统方法-DPM"><span class="nav-number">1.</span> <span class="nav-text">传统方法-DPM</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1104,6 +701,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5"></script>
+
+
 
   
 
