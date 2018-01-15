@@ -108,7 +108,11 @@
 <meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Ffastrcnn-arch.png@!laphiler">
 <meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Ffastrcnn-perfermence-1.jpg@!laphiler">
 <meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Ffastrcnn-per-2.jpg@!laphiler">
-<meta property="og:updated_time" content="2018-01-15T06:16:55.000Z">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Frcnns-list.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Ffasterrcnn-arch.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2FRPN.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Fanchor.png@!laphiler">
+<meta property="og:updated_time" content="2018-01-15T13:38:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CNN经典神经网络模型 | 目标检测">
 <meta name="twitter:description" content="目标检测是计算机视觉领域一个经典问题，本文主要涉及该领域的经典模型：RCNN, Fast R-CNN, Faster R-CNN, YOLO，SSD。">
@@ -389,7 +393,7 @@
 <li>将每个region proposal提取到的CNN特征输入到SVM进行分类；</li>
 <li><strong>边框回归</strong>（bounding-box regression)，边框回归是对region proposal进行纠正的线性回归算法，为了让region proposal提取到的窗口跟目标真实窗口更吻合。</li>
 </ol>
-<h3 id="selective-search"><a href="#selective-search" class="headerlink" title="selective search"></a>selective search</h3><p><strong>总体思路</strong>:假设现在图像上有n个预分割的区域,表示为R={R1, R2, …, Rn}, 计算每个region与它相邻region(注意是相邻的区域)的相似度,这样会得到一个n*n的相似度矩阵(同一个区域之间和一个区域与不相邻区域之间的相似度可设为NaN),从矩阵中找出最大相似度值对应的两个区域,将这两个区域合二为一,这时候图像上还剩下n-1个区域; 重复上面的过程(只需要计算新的区域与它相邻区域的新相似度,其他的不用重复计算),重复一次,区域的总数目就少1,知道最后所有的区域都合并称为了同一个区域(即此过程进行了n-1次,区域总数目最后变成了1).算法的流程图如下图。</p>
+<h3 id="selective-search"><a href="#selective-search" class="headerlink" title="selective search"></a>selective search</h3><p><strong>总体思路</strong>:假设现在图像上有n个预分割的区域,表示为R={R1, R2, …, Rn}, 计算每个region与它相邻region(注意是相邻的区域)的相似度,这样会得到一个n*n的相似度矩阵(同一个区域之间和一个区域与不相邻区域之间的相似度可设为NaN),从矩阵中找出最大相似度值对应的两个区域,将这两个区域合二为一,这时候图像上还剩下n-1个区域; 重复上面的过程(只需要计算新的区域与它相邻区域的新相似度,其他的不用重复计算),重复一次,区域的总数目就少1,知道最后所有的区域都合并称为了同一个区域(即此过程进行了n-1次,区域总数目最后变成了1).算法的流程图如下图。<a href="https://zhuanlan.zhihu.com/p/21412911" target="_blank" rel="noopener">参考文章</a></p>
 <p><strong>合并规则</strong>:</p>
 <ul>
 <li>颜色（颜色直方图）相近的 </li>
@@ -485,7 +489,51 @@
 <h3 id="性能提升"><a href="#性能提升" class="headerlink" title="性能提升"></a>性能提升</h3><p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Ffastrcnn-perfermence-1.jpg@!laphiler" alt=""></p>
 <p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Ffastrcnn-per-2.jpg@!laphiler" alt=""></p>
 <p>上图是不考虑候选区域生成，下图包括候选区域生成，region proposal 的提取使用 selective search，目标检测时间大多消耗在这上面(提region proposal 2~3s，而提特征分类只需0.32s)，无法满足实时应用，那么，怎么解决候选区域的计算呢？一个方法是也靠神经网络。</p>
-<h2 id="Faster-R-CNN-NIPS2015"><a href="#Faster-R-CNN-NIPS2015" class="headerlink" title="Faster R-CNN(NIPS2015)"></a>Faster R-CNN(NIPS2015)</h2><p>Faster R-CNN统一的网络结构如下图所示，可以简单看作RPN网络+Fast R-CNN网络。</p>
+<h2 id="Faster-R-CNN-NIPS2015"><a href="#Faster-R-CNN-NIPS2015" class="headerlink" title="Faster R-CNN(NIPS2015)"></a>Faster R-CNN(NIPS2015)</h2><p>从RCNN到Fast RCNN，再到Faster RCNN，目标检测的四个基本步骤（候选区域生成，特征提取，分类，位置精修）终于被统一到一个深度网络框架之内。所有计算没有重复，完全在GPU中完成，大大提高了运行速度。<br><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Frcnns-list.png@!laphiler" alt=""></p>
+<p>Faster R-CNN统一的网络结构如下图所示，可以简单看作<strong>区域生成网络(RPN region proposal network)</strong>网络+Fast R-CNN网络。用RPN网络代替Fast RCNN中的Selective Search方法。本篇论文着重解决了这个系统中的三个问题： <a href="http://blog.csdn.net/shenxiaolu1984/article/details/51152614" target="_blank" rel="noopener">参考1</a> <a href="https://zhuanlan.zhihu.com/p/24916624" target="_blank" rel="noopener">参考2</a></p>
+<ol>
+<li>如何设计区域生成网络 </li>
+<li>如何训练区域生成网络 </li>
+<li>如何让区域生成网络和fast RCNN网络共享特征提取网络</li>
+</ol>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Ffasterrcnn-arch.png@!laphiler" alt=""></p>
+<p><strong>RPN的核心思想</strong>是使用卷积神经网络直接产生region proposal，<strong>即从feature map逆向找region proposal</strong>，使用的方法本质上就是滑动窗口。RPN的设计比较巧妙，<strong>RPN只需在最后的卷积层上滑动一遍</strong>，因为anchor机制和边框回归可以得到多尺度多长宽比的region proposal。</p>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2FRPN.png@!laphiler" alt=""></p>
+<p>上边的<strong>RPN网络结构图</strong>（使用了ZF模型）,</p>
+<ul>
+<li>给定输入图像（假设分辨率为600*1000）</li>
+<li>经过卷积操作得到最后一层的卷积特征图（大小约为40*60)</li>
+<li>在这个特征图上使用3x3的卷积核（滑动窗口）与特征图进行卷积，最后一层卷积层共有256个feature map，那么这个3x3的区域卷积后可以获得一个256维的特征向量。</li>
+<li>边接cls layer和reg layer分别用于分类和边框回归</li>
+<li><p><strong>计算anchor</strong>：把每个特征点映射回映射回原图的感受野的中心点当成一个基准点，然后围绕这个基准点选取k个不同scale、aspect ratio的anchor。论文中3个scale（三种面积<span>$(128^2,256^2,521^2)$</span><!-- Has MathJax -->），3个aspect ratio长宽比( <span>$(1:1,1:2,2:1)$</span><!-- Has MathJax --> )</p>
+</li>
+<li><p>对于这个40x60的feature map，总共有约20000(40x60x9)个anchor，也就是预测20000个region proposal。</p>
+</li>
+</ul>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Fanchor.png@!laphiler" alt=""></p>
+<p><strong>关于正负样本的划分</strong>：考察训练集中的每张图像（含有人工标定的ground true box）的所有anchor（N <em> M </em> k）</p>
+<ul>
+<li>a. 对每个标定的ground true box区域，与其重叠比例最大的anchor记为 正样本 (保证每个ground true 至少对应一个正样本anchor)</li>
+<li>b. 对a)剩余的anchor，如果其与某个标定区域重叠比例大于0.7，记为正样本（每个ground true box可能会对应多个正样本anchor。但每个正样本anchor 只可能对应一个grand true box）；如果其与任意一个标定的重叠比例都小于0.3，记为负样本。</li>
+<li>c. 对a),b)剩余的anchor，弃去不用。</li>
+<li>d. 跨越图像边界的anchor弃去不用</li>
+</ul>
+<p><strong>定义损失函数</strong><br>损失函数沿用fast r-cnn的损失函数。</p>
+<p><strong>训练</strong>：<br>正负样本的选择，文中提到如果对每幅图的所有anchor都去优化loss function，那么最终会因为负样本过多导致最终得到的模型对正样本预测准确率很低。因此 在每幅图像中随机采样256个anchors去参与计算一次mini-batch的损失。正负比例1:1(如果正样本少于128则补充采样负样本)</p>
+<p><strong>Sharing Features for RPN and Fast R-CNN</strong><br>我们知道，如果是分别训练两种不同任务的网络模型，即使它们的结构、参数完全一致，但各自的卷积层内的卷积核也会向着不同的方向改变，导致无法共享网络权重，论文作者提出了三种可能的方式：</p>
+<ul>
+<li><strong>Alternating training</strong>：此方法其实就是一个不断迭代的训练过程，既然分别训练RPN和Fast-RCNN可能让网络朝不同的方向收敛，a)那么我们可以先独立训练RPN，然后用这个RPN的网络权重对Fast-RCNN网络进行初始化并且用之前RPN输出proposal作为此时Fast-RCNN的输入训练Fast R-CNN。b) 用Fast R-CNN的网络参数去初始化RPN。之后不断迭代这个过程，即循环训练RPN、Fast-RCNN。</li>
+<li><strong>Approximate joint training</strong>：这里与前一种方法不同，不再是串行训练RPN和Fast-RCNN，而是尝试把二者融入到一个网络内，具体融合的网络结构如下图所示，可以看到，proposals是由中间的RPN层输出的，而不是从网络外部得到。需要注意的一点，名字中的”approximate”是因为反向传播阶段RPN产生的cls score能够获得梯度用以更新参数，但是proposal的坐标预测则直接把梯度舍弃了，这个设置可以使backward时该网络层能得到一个解析解（closed results），并且相对于Alternating traing减少了25-50%的训练时间。</li>
+<li><strong>Approximate joint training</strong>：这里与前一种方法不同，不再是串行训练RPN和Fast-RCNN，而是尝试把二者融入到一个网络内，具体融合的网络结构如下图所示，可以看到，proposals是由中间的RPN层输出的，而不是从网络外部得到。需要注意的一点，名字中的”approximate”是因为反向传播阶段RPN产生的cls score能够获得梯度用以更新参数，但是proposal的坐标预测则直接把梯度舍弃了，这个设置可以使backward时该网络层能得到一个解析解（closed results），并且相对于Alternating traing减少了25-50%的训练时间。</li>
+</ul>
+<p>上面说完了三种可能的训练方法，可非常神奇的是作者发布的源代码里却用了另外一种叫做4-Step Alternating Training的方法，思路和迭代的Alternating training有点类似，但是细节有点差别：</p>
+<ul>
+<li>第一步：用ImageNet模型初始化，独立训练一个RPN网络；</li>
+<li>第二步：仍然用ImageNet模型初始化，但是使用上一步RPN网络产生的proposal作为输入，训练一个Fast-RCNN网络，至此，两个网络每一层的参数完全不共享；</li>
+<li>第三步：使用第二步的Fast-RCNN网络参数初始化一个新的RPN网络，但是把RPN、Fast-RCNN共享的那些卷积层的learning rate设置为0，也就是不更新，仅仅更新RPN特有的那些网络层，重新训练，此时，两个网络已经共享了所有公共的卷积层；</li>
+<li>第四步：仍然固定共享的那些网络层，把Fast-RCNN特有的网络层也加入进来，形成一个unified network，继续训练，fine tune Fast-RCNN特有的网络层，此时，该网络已经实现我们设想的目标，即网络内部预测proposal并实现检测的功能。</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>以上介绍完了以RCNN为代表的基于Region Proposal的目标检测算法（RCNN，SPP-NET，Fast-RCNN，Faster-RCNN），更多实现细节可以阅读原论文和代码。由于篇幅原因，接下来会另起一篇文章来介绍以YoLo为代表的基于回归方法的深度学习目标检测算法（YoLo，SSD）。</p>
 
       
     </div>
@@ -679,7 +727,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#传统方法-DPM"><span class="nav-number">1.</span> <span class="nav-text">传统方法-DPM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DPM算法思想"><span class="nav-number">1.1.</span> <span class="nav-text">DPM算法思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DPM算法缺点"><span class="nav-number">1.2.</span> <span class="nav-text">DPM算法缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#R-CNN-CVPR2014-TPAMI2015"><span class="nav-number">2.</span> <span class="nav-text">R-CNN (CVPR2014, TPAMI2015)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#训练流程："><span class="nav-number">2.1.</span> <span class="nav-text">训练流程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#selective-search"><span class="nav-number">2.2.</span> <span class="nav-text">selective search</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非极大值抑制（NMS）"><span class="nav-number">2.3.</span> <span class="nav-text">非极大值抑制（NMS）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#边框回归（bounding-box-regression"><span class="nav-number">2.4.</span> <span class="nav-text">边框回归（bounding-box regression)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评估标准"><span class="nav-number">2.5.</span> <span class="nav-text">评估标准</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络设计"><span class="nav-number">2.6.</span> <span class="nav-text">网络设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#网络初始化"><span class="nav-number">2.6.1.</span> <span class="nav-text">网络初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fine-tuning阶段"><span class="nav-number">2.6.2.</span> <span class="nav-text">fine-tuning阶段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练阶段"><span class="nav-number">2.7.</span> <span class="nav-text">训练阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试阶段"><span class="nav-number">2.8.</span> <span class="nav-text">测试阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#R-CNN小结"><span class="nav-number">2.9.</span> <span class="nav-text">R-CNN小结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SPP-NET"><span class="nav-number">2.10.</span> <span class="nav-text">SPP-NET</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fast-R-CNN-ICCV2015"><span class="nav-number">3.</span> <span class="nav-text">Fast R-CNN(ICCV2015)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fast-R-CNN的三个进步"><span class="nav-number">3.1.</span> <span class="nav-text">Fast R-CNN的三个进步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ROI-Pooling-Layer"><span class="nav-number">3.2.</span> <span class="nav-text">ROI Pooling Layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多任务损失函数-multi-task-loss"><span class="nav-number">3.3.</span> <span class="nav-text">多任务损失函数(multi-task loss)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型"><span class="nav-number">3.4.</span> <span class="nav-text">模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#位置-分类联合学习"><span class="nav-number">3.4.1.</span> <span class="nav-text">位置 + 分类联合学习</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能提升"><span class="nav-number">3.5.</span> <span class="nav-text">性能提升</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Faster-R-CNN-NIPS2015"><span class="nav-number">4.</span> <span class="nav-text">Faster R-CNN(NIPS2015)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#传统方法-DPM"><span class="nav-number">1.</span> <span class="nav-text">传统方法-DPM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DPM算法思想"><span class="nav-number">1.1.</span> <span class="nav-text">DPM算法思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DPM算法缺点"><span class="nav-number">1.2.</span> <span class="nav-text">DPM算法缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#R-CNN-CVPR2014-TPAMI2015"><span class="nav-number">2.</span> <span class="nav-text">R-CNN (CVPR2014, TPAMI2015)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#训练流程："><span class="nav-number">2.1.</span> <span class="nav-text">训练流程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#selective-search"><span class="nav-number">2.2.</span> <span class="nav-text">selective search</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非极大值抑制（NMS）"><span class="nav-number">2.3.</span> <span class="nav-text">非极大值抑制（NMS）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#边框回归（bounding-box-regression"><span class="nav-number">2.4.</span> <span class="nav-text">边框回归（bounding-box regression)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评估标准"><span class="nav-number">2.5.</span> <span class="nav-text">评估标准</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络设计"><span class="nav-number">2.6.</span> <span class="nav-text">网络设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#网络初始化"><span class="nav-number">2.6.1.</span> <span class="nav-text">网络初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fine-tuning阶段"><span class="nav-number">2.6.2.</span> <span class="nav-text">fine-tuning阶段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练阶段"><span class="nav-number">2.7.</span> <span class="nav-text">训练阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试阶段"><span class="nav-number">2.8.</span> <span class="nav-text">测试阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#R-CNN小结"><span class="nav-number">2.9.</span> <span class="nav-text">R-CNN小结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SPP-NET"><span class="nav-number">2.10.</span> <span class="nav-text">SPP-NET</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fast-R-CNN-ICCV2015"><span class="nav-number">3.</span> <span class="nav-text">Fast R-CNN(ICCV2015)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fast-R-CNN的三个进步"><span class="nav-number">3.1.</span> <span class="nav-text">Fast R-CNN的三个进步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ROI-Pooling-Layer"><span class="nav-number">3.2.</span> <span class="nav-text">ROI Pooling Layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多任务损失函数-multi-task-loss"><span class="nav-number">3.3.</span> <span class="nav-text">多任务损失函数(multi-task loss)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型"><span class="nav-number">3.4.</span> <span class="nav-text">模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#位置-分类联合学习"><span class="nav-number">3.4.1.</span> <span class="nav-text">位置 + 分类联合学习</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能提升"><span class="nav-number">3.5.</span> <span class="nav-text">性能提升</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Faster-R-CNN-NIPS2015"><span class="nav-number">4.</span> <span class="nav-text">Faster R-CNN(NIPS2015)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li></ol></div>
             
 
           </div>
