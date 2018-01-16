@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="AI,Deep learning,CNN,RCNN,Fast R-CNN,Faster R-CNN,YOLO,Object detection," />
+  <meta name="keywords" content="AI,Deep learning,CNN,RCNN,Fast R-CNN,Faster R-CNN,Object detection," />
 
 
 
@@ -82,7 +82,7 @@
 
 
 <meta name="description" content="目标检测是计算机视觉领域一个经典问题，本文主要涉及该领域的经典模型：RCNN, Fast R-CNN, Faster R-CNN, YOLO，SSD。">
-<meta name="keywords" content="AI,Deep learning,CNN,RCNN,Fast R-CNN,Faster R-CNN,YOLO,Object detection">
+<meta name="keywords" content="AI,Deep learning,CNN,RCNN,Fast R-CNN,Faster R-CNN,Object detection">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CNN经典神经网络模型 | 目标检测">
 <meta property="og:url" content="http://laphiler.com/2018/01/08/cnn-classic-model-objectdetection/index.html">
@@ -112,7 +112,7 @@
 <meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Ffasterrcnn-arch.png@!laphiler">
 <meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2FRPN.png@!laphiler">
 <meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Fanchor.png@!laphiler">
-<meta property="og:updated_time" content="2018-01-15T13:38:37.000Z">
+<meta property="og:updated_time" content="2018-01-15T13:49:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CNN经典神经网络模型 | 目标检测">
 <meta name="twitter:description" content="目标检测是计算机视觉领域一个经典问题，本文主要涉及该领域的经典模型：RCNN, Fast R-CNN, Faster R-CNN, YOLO，SSD。">
@@ -360,11 +360,9 @@
 <a id="more"></a>
 <ul>
 <li><a href="https://arxiv.org/abs/1311.2524" target="_blank" rel="noopener">RCNN - Rich feature hierarchies for accurate object detection and semantic segmentation</a> (2014) </li>
+<li><a href="https://arxiv.org/abs/1406.4729" target="_blank" rel="noopener">SSP-NET</a> (2014)</li>
 <li><a href="https://arxiv.org/abs/1504.08083" target="_blank" rel="noopener">Fast R-CNN</a> (2015)</li>
 <li><a href="https://arxiv.org/abs/1506.01497" target="_blank" rel="noopener">Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks</a> (2016)</li>
-<li><a href="https://arxiv.org/abs/1506.02640" target="_blank" rel="noopener">YoLo - You Only Look Once: Unified, Real-Time Object Detection</a> (2016)</li>
-<li><a href="https://arxiv.org/abs/1512.02325" target="_blank" rel="noopener">SSD: Single Shot MultiBox Detector
-</a> (2016)</li>
 </ul>
 <p>从下图可以大概看到当前目标检测领域的研究路径，目标分类 -&gt; 目标分类+定位 -&gt; 目标检测 -&gt; 实例分隔，由简到难，由浅到深。当前的目标检测总的发展方向主要就是两条线，一条线是提高检测的精度、另一条线是提高检测的速度（<a href="https://www.zhihu.com/question/34223049/answer/160336559" target="_blank" rel="noopener">参考</a>）。<br><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Fobjectdetection.png@!laphiler" alt=""></p>
 <p><strong>传统的目标检测方法</strong>一般分为<strong>三个阶段</strong>（其实DL的方法也大概是这三阶段）：首先在给定的图像上选择一些<strong>候选区域</strong>，然后对这些区域<strong>特征提取</strong>，最后使用训练的分类器进行<strong>目标分类</strong>。</p>
@@ -563,8 +561,6 @@
           
             <a href="/tags/Faster-R-CNN/" rel="tag"># Faster R-CNN</a>
           
-            <a href="/tags/YOLO/" rel="tag"># YOLO</a>
-          
             <a href="/tags/Object-detection/" rel="tag"># Object detection</a>
           
         </div>
@@ -671,7 +667,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -701,6 +697,12 @@
                   <a href="https://github.com/laphiler" target="_blank" title="GitHub">
                     
                       <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:laphiler@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                 </span>
               
             
