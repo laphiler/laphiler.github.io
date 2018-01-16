@@ -81,18 +81,28 @@
 
 
 
-<meta name="description" content="目标检测是计算机视觉领域一个经典问题，上一篇介绍了基于region proposal的深度学习系列模型，本篇介绍基于回归方法的深度学习目标检测模型YoLo，SSD。">
+<meta name="description" content="目标检测是计算机视觉领域一个经典问题，上一篇介绍了基于region proposal的深度学习系列模型，本篇介绍基于回归方法的深度学习目标检测模型YoLo，YoLov2，SSD。">
 <meta name="keywords" content="AI,Deep learning,CNN,Object detection,YoLo,SSD">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CNN经典神经网络模型 | 目标检测(续)">
 <meta property="og:url" content="http://laphiler.com/2018/01/15/cnn-classic-model-objectdetection2/index.html">
 <meta property="og:site_name" content="Laphiler">
-<meta property="og:description" content="目标检测是计算机视觉领域一个经典问题，上一篇介绍了基于region proposal的深度学习系列模型，本篇介绍基于回归方法的深度学习目标检测模型YoLo，SSD。">
+<meta property="og:description" content="目标检测是计算机视觉领域一个经典问题，上一篇介绍了基于region proposal的深度学习系列模型，本篇介绍基于回归方法的深度学习目标检测模型YoLo，YoLov2，SSD。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-01-16T05:05:43.000Z">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Fmodel_compare.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo_detection_sys.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLov1-arch.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo_inference.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo_2_boxes.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo-loss.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo-loss-1.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo-test-1.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo-test-2.png@!laphiler">
+<meta property="og:updated_time" content="2018-01-16T15:04:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CNN经典神经网络模型 | 目标检测(续)">
-<meta name="twitter:description" content="目标检测是计算机视觉领域一个经典问题，上一篇介绍了基于region proposal的深度学习系列模型，本篇介绍基于回归方法的深度学习目标检测模型YoLo，SSD。">
+<meta name="twitter:description" content="目标检测是计算机视觉领域一个经典问题，上一篇介绍了基于region proposal的深度学习系列模型，本篇介绍基于回归方法的深度学习目标检测模型YoLo，YoLov2，SSD。">
+<meta name="twitter:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Fmodel_compare.png@!laphiler">
 
 
 
@@ -332,15 +342,83 @@
       
 
       
-        <p>目标检测是计算机视觉领域一个经典问题，<a href="http://www.laphiler.com/2018/01/08/cnn-classic-model-objectdetection/" target="_blank" rel="noopener">上一篇介绍了基于region proposal的深度学习系列模型</a>，本篇介绍基于回归方法的深度学习目标检测模型YoLo，SSD。</p>
+        <p>目标检测是计算机视觉领域一个经典问题，<a href="http://www.laphiler.com/2018/01/08/cnn-classic-model-objectdetection/" target="_blank" rel="noopener">上一篇介绍了基于region proposal的深度学习系列模型</a>，本篇介绍基于回归方法的深度学习目标检测模型YoLo，YoLov2，SSD。</p>
 <a id="more"></a>
+<p>paper:</p>
 <ul>
-<li><a href="https://arxiv.org/abs/1506.02640" target="_blank" rel="noopener">YoLo - You Only Look Once: Unified, Real-Time Object Detection</a> (2016)</li>
+<li><a href="https://arxiv.org/abs/1506.02640" target="_blank" rel="noopener">YoLo - You Only Look Once: Unified, Real-Time Object Detection</a> (2015)</li>
+<li><a href="https://arxiv.org/abs/1709.05943" target="_blank" rel="noopener">YoLov2 - Fast YOLO: A Fast You Only Look Once System for Real-time Embedded Object Detection in Video
+</a></li>
+<li><a href="https://arxiv.org/abs/1612.08242" target="_blank" rel="noopener">YOLO9000 - YOLO9000: Better, Faster, Stronger</a> (2016)</li>
 <li><a href="https://arxiv.org/abs/1512.02325" target="_blank" rel="noopener">SSD: Single Shot MultiBox Detector
 </a> (2016)</li>
 </ul>
-<p><strong>YoLo特点</strong></p>
-
+<p>code:</p>
+<ul>
+<li><a href="https://github.com/choasUp/caffe-yolo9000" target="_blank" rel="noopener">caffe实现：caffe-yolo9000</a></li>
+</ul>
+<h2 id="YoLo"><a href="#YoLo" class="headerlink" title="YoLo"></a>YoLo</h2><h3 id="创新"><a href="#创新" class="headerlink" title="创新"></a>创新</h3><p>YOLO将物体检测作为回归问题求解。基于一个单独的end-to-end网络，完成从原始图像的输入到物体位置和类别的输出。从网络设计上，YOLO与rcnn、fast rcnn及faster rcnn的区别如下：</p>
+<ul>
+<li><p><strong>YOLO训练和检测均是在一个单独网络中进行，实现真正意义上的端到端的模型。</strong>YOLO没有显示地求取region proposal的过程。而rcnn/fast rcnn 采用分离的模块（独立于网络之外的selective search方法）求取候选框（可能会包含物体的矩形区域），训练过程因此也是分成多个模块进行。Faster rcnn使用RPN（region proposal network）卷积网络替代rcnn/fast rcnn的selective<br>search模块，将RPN集成到fast rcnn检测网络中，得到一个统一的检测网络。尽管RPN与fast rcnn共享卷积层，但是在模型训练过程中，需要反复训练RPN网络和fast rcnn网络（注意这两个网络核心卷积层是参数共享的）</p>
+</li>
+<li><p><strong>YOLO将物体检测作为一个回归问题进行求解</strong>，输入图像经过一次inference，便能得到图像中所有物体的位置和其所属类别及相应的置信概率。而rcnn/fast rcnn/faster rcnn将检测结果分为两部分求解：物体类别（分类问题），物体位置即bounding box（回归问题）。</p>
+</li>
+</ul>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_classic_model%2Fmodel_compare.png@!laphiler" alt=""></p>
+<h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><ul>
+<li>YOLO网络借鉴了GoogLeNet分类网络结构。不同的是，YOLO未使用Inception Module，而是使用1x1卷积层（此处1x1卷积层的存在是为了跨通道信息整合）+ 3x3卷积层简单替代。</li>
+<li>Fast YOLO使用9个卷积层代替YOLO的24个，网络更轻快，速度从YOLO的45fps提升到155fps，但同时损失了检测准确率。</li>
+<li>使用全图作为 Context 信息，背景错误（把背景错认为物体）比较少。</li>
+</ul>
+<p><strong>流程</strong></p>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo_detection_sys.png@!laphiler" alt=""></p>
+<ol>
+<li>Resize成448x448，图片分割得到7x7网格(cell)</li>
+<li>CNN提取特征和预测：卷积不忿负责提特征。全链接部分负责预测：<ul>
+<li>a) 7x7x2=98个bounding box(bbox) 的坐标x<em>{center},y</em>{center},w,h 以及是否有物体的conﬁdence共5个值。</li>
+<li>b) 7x7=49个cell所属20个物体的概率。</li>
+</ul>
+</li>
+<li>过滤bbox（通过nms）</li>
+</ol>
+<p>YOLO检测网络包括24个卷积层和2个全连接层，如下图所示。其中，<strong>卷积层用来提取图像特征</strong>，<strong>全连接层用来预测图像位置和类别概率值</strong>。</p>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLov1-arch.png@!laphiler" alt=""></p>
+<h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><ol>
+<li><strong>预训练分类网络</strong>： 在 ImageNet 1000-class competition dataset上预训练一个分类网络，这个网络是上图中的前20个卷机网络+average-pooling layer+ fully connected layer （此时网络输入是224x224）。</li>
+<li>训练检测网络：转换模型去执行检测任务，《Object detection networks on convolutional feature maps》提到说在预训练网络中增加卷积和全链接层可以改善性能。在他们例子基础上添加4个卷积层和2个全链接层，随机初始化权重。检测要求细粒度的视觉信息，所以把网络输入也又224x224变成448x448。见上图。 </li>
+</ol>
+<h4 id="具体过程"><a href="#具体过程" class="headerlink" title="具体过程"></a>具体过程</h4><p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo_inference.png@!laphiler" alt=""></p>
+<p><a href="https://docs.google.com/presentation/d/1aeRvtKG21KHdD5lg6Hgyhx5rPq_ZOsGjG5rJ1HP7BbA/pub?start=false&amp;loop=false&amp;delayms=3000&amp;slide=id.g137784ab86_4_4011" target="_blank" rel="noopener">详细过程参考Google doc</a></p>
+<ul>
+<li>一幅图片分成 <span>$7*7$</span><!-- Has MathJax --> 个网格(grid cell)，某个物体的中心落在这个网格中此网格就负责预测这个物体。</li>
+<li><p>最后一层输出为 <span>$(7 * 7) * 30$</span><!-- Has MathJax --> 的维度。每个 <span>$1 * 1 * 30$</span><!-- Has MathJax --> 的维度对应原图 <span>$7 * 7$</span><!-- Has MathJax --> 个cell中的一个，<span>$1 * 1 * 30$</span><!-- Has MathJax --> 中含有类别预测和bbox坐标预测。</p>
+<ol>
+<li><p>a) 每个网格（ <span>$1 * 1 * 30$</span><!-- Has MathJax --> 维度对应原图中的cell）要预测<strong>2个bounding box</strong> （下图中<strong>黄色实线框</strong>）的坐标 <span>$（x_{center},y_{center},w,h）$</span><!-- Has MathJax --> ，其中：中心坐标的 <span>$x_{center},y_{center}$</span><!-- Has MathJax --> 相对于对应的网格归一化到0-1之间，w,h用图像的width和height归一化到0-1之间。 每个bounding box除了要回归自身的位置之外，还要附带预测一个 <span>$confidence$</span><!-- Has MathJax --> 值。 这个<strong>confidence</strong>代表了所预测的box中<strong>含有object的置信度</strong>和<strong>这个box预测的有多准两重信息</strong>： <span>$confidence = Pr(Object) * IOU^{truth}_{pred}$</span><!-- Has MathJax --> 其中如果有ground true box(人工标记的物体)落在一个grid cell里，第一项取1，否则取0。 第二项是预测的bounding box和实际的ground truth box之间的IoU值。即：每个bounding box要预测 <span>$x_{center},y_{center},w,h,confidence$</span><!-- Has MathJax --> 共5个值 ，2个bounding box共10个值，对应 <span>$1 * 1 * 30$</span><!-- Has MathJax --> 维度特征中的前10个。</p>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo_2_boxes.png@!laphiler" alt=""></p>
+</li>
+<li><p>b) 每个网格还要预测<strong>类别信息</strong>，论文中有20类。<span>$7 * 7$</span><!-- Has MathJax --> 的网格，每个网格要预测2个 bounding box 和 20个类别概率，输出就是 <span>$7 * 7 * (5 * 2 + 20)$</span><!-- Has MathJax --> 。 (通用公式： SxS个网格，每个网格要预测B个bounding box还要预测C个categories，输出就是<span>$S * S * (5 * B + C)$</span><!-- Has MathJax --> 的一个tensor。 注意：class信息是针对每个网格的，confidence信息是针对每个bounding box的）</p>
+</li>
+</ol>
+</li>
+</ul>
+<h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>损失函数的定义如下，损失函数的设计目标就是让坐标，置信度和类别这个三个方面达到很好的平衡。简单的全部采用了Sum-Squared Error Loss来做这件事会有以下不足：① 8维的Localization Error和20维的Classification Error同等重要显然是不合理的；② 如果一个网格中没有Object（一幅图中这种网格很多），那么就会将这些网格中的Box的Confidence Push到0，相比于较少的有Object的网格，这种做法是Overpowering的，这会导致网络不稳定甚至发散。 解决方案如下。<a href="http://lanbing510.info/2017/08/28/YOLO-SSD.html" target="_blank" rel="noopener">参考原文</a></p>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo-loss.png@!laphiler" alt=""></p>
+<ol>
+<li>更重视8维的坐标预测，给这些损失前面赋予更大的Loss Weight, 记为 <span>$&lambda;_{coord}$</span><!-- Has MathJax --> ,在Pascal VOC训练中取5。（上图蓝色框）。</li>
+<li>对没有Object的Bbox的Confidence Loss，赋予小的Loss Weight，记为<br><span>$&lambda;_{noobj}$</span><!-- Has MathJax --> 在Pascal VOC训练中取0.5上图橙色框）。</li>
+<li>有Object的Bbox的Confidence Loss（上图红色框）和类别的Loss（上图紫色框）的Loss Weight正常取1。</li>
+<li>对不同大小的Bbox预测中，相比于大Bbox预测偏一点，小Bbox预测偏一点更不能忍受。而Sum-Square Error Loss中对同样的偏移Loss是一样。为了缓和这个问题，将Bbox的Width和Height取平方根代替原本的Height和Width。 如下图：Small Bbox的横轴值较小，发生偏移时，反应到y轴上的Loss（下图绿色）比Big Bbox（下图红色）要大。</li>
+<li>一个网格预测多个Bbox，在训练时我们希望每个Object（Ground True box）只有一个Bbox专门负责（一个Object 一个Bbox）。具体做法是与Ground True Box（Object）的IOU最大的Bbox 负责该Ground True Box（Object）的预测。这种做法称作Bbox Predictor的Specialization（专职化）。每个预测器会对特定（Sizes,Aspect Ratio or Classed of Object）的Ground True Box预测的越来越好。</li>
+</ol>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo-loss-1.png@!laphiler" alt=""></p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>计算每个Bbox的Class-Specific Confidence Score：每个网格预测的Class信息(<br><span>$Pr(Class_i|Object))$</span><!-- Has MathJax --> 和Bbox预测的Confidence信息 <span>$(Pr(Object) &lowast; IOU^{truth}_{pred})$</span><!-- Has MathJax --> 相乘，就得到每个Bbox的Class-Specific Confidence Score。<br><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo-test-1.png@!laphiler" alt=""></p>
+<p>2 进行Non-Maximum Suppression（NMS）：得到每个Bbox的Class-Specific Confidence Score以后，设置阈值，滤掉得分低的Bboxes，对保留的Bboxes进行NMS处理，就得到最终的检测结果。更为直观详细的流程可参见[5]。<br><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo-test-2.png@!laphiler" alt=""></p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>YOLO对相互靠的很近的物体（挨在一起且中点都落在同一个格子上的情况），还有很小的群体 检测效果不好，这是因为一个网格中只预测了两个框，并且只属于一类。</li>
+<li>测试图像中，当同一类物体出现的不常见的长宽比和其他情况时泛化能力偏弱。</li>
+<li>由于损失函数的问题，定位误差是影响检测效果的主要原因，尤其是大小物体的处理上，还有待加强。</li>
+</ul>
+<h2 id="SSD"><a href="#SSD" class="headerlink" title="SSD"></a>SSD</h2>
       
     </div>
     
@@ -440,8 +518,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -512,6 +599,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#YoLo"><span class="nav-number">1.</span> <span class="nav-text">YoLo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创新"><span class="nav-number">1.1.</span> <span class="nav-text">创新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络结构"><span class="nav-number">1.2.</span> <span class="nav-text">网络结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练"><span class="nav-number">1.3.</span> <span class="nav-text">训练</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#具体过程"><span class="nav-number">1.3.1.</span> <span class="nav-text">具体过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#损失函数"><span class="nav-number">1.3.2.</span> <span class="nav-text">损失函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">1.4.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点"><span class="nav-number">1.5.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSD"><span class="nav-number">2.</span> <span class="nav-text">SSD</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
