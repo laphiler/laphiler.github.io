@@ -98,7 +98,14 @@
 <meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo-loss-1.png@!laphiler">
 <meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo-test-1.png@!laphiler">
 <meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FYoLo-test-2.png@!laphiler">
-<meta property="og:updated_time" content="2018-01-16T15:04:42.000Z">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2Fssd-model.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FVGG_model.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2Fssd_box.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2Fssd-model-detail.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2Fssd_loss.png@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2Fssd-positive-sample.jpg@!laphiler">
+<meta property="og:image" content="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2Fssd-default-box.png@!laphiler">
+<meta property="og:updated_time" content="2018-01-18T10:36:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CNN经典神经网络模型 | 目标检测(续)">
 <meta name="twitter:description" content="目标检测是计算机视觉领域一个经典问题，上一篇介绍了基于region proposal的深度学习系列模型，本篇介绍基于回归方法的深度学习目标检测模型YoLo，YoLov2，SSD。">
@@ -356,6 +363,7 @@
 <p>code:</p>
 <ul>
 <li><a href="https://github.com/choasUp/caffe-yolo9000" target="_blank" rel="noopener">caffe实现：caffe-yolo9000</a></li>
+<li><a href="https://github.com/weiliu89/caffe/tree/ssd" target="_blank" rel="noopener">caffe实现：ssd</a></li>
 </ul>
 <h2 id="YoLo"><a href="#YoLo" class="headerlink" title="YoLo"></a>YoLo</h2><h3 id="创新"><a href="#创新" class="headerlink" title="创新"></a>创新</h3><p>YOLO将物体检测作为回归问题求解。基于一个单独的end-to-end网络，完成从原始图像的输入到物体位置和类别的输出。从网络设计上，YOLO与rcnn、fast rcnn及faster rcnn的区别如下：</p>
 <ul>
@@ -418,7 +426,35 @@
 <li>测试图像中，当同一类物体出现的不常见的长宽比和其他情况时泛化能力偏弱。</li>
 <li>由于损失函数的问题，定位误差是影响检测效果的主要原因，尤其是大小物体的处理上，还有待加强。</li>
 </ul>
-<h2 id="SSD"><a href="#SSD" class="headerlink" title="SSD"></a>SSD</h2>
+<h2 id="SSD"><a href="#SSD" class="headerlink" title="SSD"></a>SSD</h2><p>上半部分介绍的YoLo有一些缺陷：每个网格只预测一个物体，容易造成漏检；对于物体的尺度相对比较敏感，对于尺度变化较大的物体泛化能力较差。针对这两个方面SSD都有所改进，同时兼顾了 mAP 和实时性的要求（见本文开始的图1，几个模型对比）。在满足实时性的条件下，接近state of art的结果。作者的思路就是Faster R-CNN+YOLO，利用YOLO的思路和Faster R-CNN的anchor box的思想。<a href="http://blog.csdn.net/u010167269/article/details/52563573" target="_blank" rel="noopener">参考</a></p>
+<h3 id="网络结构-1"><a href="#网络结构-1" class="headerlink" title="网络结构"></a>网络结构</h3><p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2Fssd-model.png@!laphiler" alt=""></p>
+<p>该论文采用 VGG16 的基础网络结构(作者用的是D这个模型进行修改的)，使用前面的前 5 层，然后利用 astrous 算法将 fc6 和 fc7 层转化成两个卷积层。再格外增加了 3 个卷积层，和一个 average pool层。不同层次的 feature map 分别用于 default box 的偏移以及不同类别得分的预测（惯用思路：使用通用的结构(如前5个conv等)作为基础网络，然后在这个基础上增加其他的层），最后通过nms得到最终的检测结果。</p>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2FVGG_model.png@!laphiler" alt=""></p>
+<p><strong>总结一下</strong>，SSD 模型的最开始部分，本文称作 base network，是用于图像分类的标准架构。在 base network 之后，本文添加了额外辅助的网络结构：</p>
+<ul>
+<li><strong>Multi-scale feature maps for detection</strong><br>在基础网络结构后，添加了额外的卷积层，这些卷积层的大小是逐层递减的，可以在多尺度下进行 predictions。</li>
+<li><strong>Convolutional predictors for detection</strong><br>每一个添加的特征层（或者在基础网络结构中的特征层），可以使用一系列 convolutional filters，去产生一系列固定大小的 <strong>predictions</strong>，具体见 Fig.2。对于一个大小为 <span>$m&times;n$</span><!-- Has MathJax -->，具有 <span>$p$</span><!-- Has MathJax --> 通道的feature map层，使用的 convolutional filters 就是 <span>$3&times;3&times;p$</span><!-- Has MathJax --> 的 kernels。产生的 predictions，那么就是归属类别的一个得分，要么就是相对于 default box coordinate 的 shape offsets。<br>在每一个 <span>$m&times;n$</span><!-- Has MathJax --> 的特征图位置上，使用上面的 3×3 的 kernel，会产生一个输出值。<strong>bounding box offset</strong> 值是输出的 default box 与此时 feature map location 之间的相对距离（YOLO 架构则是用一个全连接层来代替这里的卷积层）。</li>
+<li><strong>Default boxes and aspect ratios</strong><br>每一个 box 相对于与其对应的 feature map cell 的位置是固定的。 在每一个 feature map cell 中，我们要 predict 得到的 box 与 default box 之间的 offsets，以及每一个 box 中包含物体的 score（每一个类别概率都要计算出）。<br>因此，对于一个位置上的 <span>$k$</span><!-- Has MathJax --> 个boxes 中的每一个 box，我们需要计算出 c 个类，每一个类的 score，还有这个 box 相对于 它的默认 box 的 <span>$4$</span><!-- Has MathJax --> 个偏移值（offsets）。于是，在 feature map 中的每一个 feature map cell 上，就需要有 <span>$(c+4)&times;k$</span><!-- Has MathJax --> 个 filters。对于一张 <span>$m&times;n$</span><!-- Has MathJax --> 大小的 feature map，即会产生 <span>$(c+4)&times;k&times;m&times;n$</span><!-- Has MathJax --> 个输出结果。</li>
+</ul>
+<h4 id="default-boxes-amp-feature-map-cell"><a href="#default-boxes-amp-feature-map-cell" class="headerlink" title="default boxes &amp; feature map cell"></a>default boxes &amp; feature map cell</h4><ul>
+<li><strong>feature map cell</strong>就是将<strong>feature map</strong>切分成 8×8 或者 4×4 之后的一个个格子；</li>
+<li>而<strong>default box</strong>就是每一个格子上，一系列固定大小的 box，即图中虚线所形成的一系列 boxes。</li>
+</ul>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2Fssd_box.png@!laphiler" alt=""></p>
+<h4 id="模型flow"><a href="#模型flow" class="headerlink" title="模型flow"></a>模型flow</h4><p>这些增加的卷积层的 feature map 的大小变化比较大，允许能够检测出不同尺度下的物体： 在低层的feature map,感受野比较小，高层的感受野比较大，在不同的feature map进行卷积，可以达到多尺度的目的。观察YoLo，后面存在两个全连接层，全连接层以后，每一个输出都会观察到整幅图像，并不是很合理。但是SSD去掉了全连接层，每一个输出只会感受到目标周围的信息，包括上下文。这样来做就增加了合理性。并且不同的feature map,预测不同宽高比的图像，这样比YOLO增加了预测更多的比例的box。（下图横向的流程）</p>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2Fssd-model-detail.png@!laphiler" alt=""></p>
+<h3 id="训练-1"><a href="#训练-1" class="headerlink" title="训练"></a>训练</h3><h4 id="损失函数-1"><a href="#损失函数-1" class="headerlink" title="损失函数"></a>损失函数</h4><p>这个与Faster R-CNN中的RPN是一样的，不过RPN是预测box里面有object或者没有，所以，没有分类，SSD直接用的softmax分类。location的损失，还是一样，都是用predict box和default box/Anchor的差 与 ground truth box和default box/Anchor的差 进行对比，求损失。</p>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2Fssd_loss.png@!laphiler" alt=""></p>
+<h4 id="训练策略"><a href="#训练策略" class="headerlink" title="训练策略"></a>训练策略</h4><p>监督学习的训练关键是人工标注的label。对于包含default box(在Faster R-CNN中叫做anchor)的网络模型（如： YOLO,Faster R-CNN, MultiBox）关键点就是如何把 标注信息(ground true box,ground true category)映射到（default box上）</p>
+<ul>
+<li>正负样本： 给定输入图像以及每个物体的 ground truth,首先找到每个ground true box对应的default box中IOU最大的作为（与该ground true box相关的匹配）正样本。然后，在剩下的default box中找到那些与任意一个ground truth box 的 IOU 大于 0.5的default box作为（与该ground true box相关的匹配）正样本。 一个 ground truth 可能对应多个 正样本default box 而不再像MultiBox那样只取一个IOU最大的default box。其他的作为负样本（每个default box要么是正样本box要么是负样本box）。下图的例子是：给定输入图像及 ground truth，分别在两种不同尺度(feature map 的大小为 8 <em> 8，4 </em> 4)下的匹配情况。有两个 default box 与猫匹配（8 <em> 8），一个 default box 与狗匹配（4 </em> 4）。</li>
+</ul>
+<p><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2Fssd-positive-sample.jpg@!laphiler" alt=""></p>
+<p>该论文是在 ImageNet 分类和定位问题上的已经训练好的 VGG16 模型中 fine-tuning 得到，使用 SGD，初始学习率为 <span>$10^{-3}$</span><!-- Has MathJax -->, 冲量为 0.9，权重衰减为 0.0005，batchsize 为 32。不同数据集的学习率改变策略不同。新增加的卷积网络采用 xavier 的方式进行初始化</p>
+<ul>
+<li>Default Box 的生成：<br><img src="http://xiaoluban.cdn.bcebos.com/laphiler%2FCNN_object_detection2%2Fssd-default-box.png@!laphiler" alt=""></li>
+</ul>
+
       
     </div>
     
@@ -609,7 +645,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#YoLo"><span class="nav-number">1.</span> <span class="nav-text">YoLo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创新"><span class="nav-number">1.1.</span> <span class="nav-text">创新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络结构"><span class="nav-number">1.2.</span> <span class="nav-text">网络结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练"><span class="nav-number">1.3.</span> <span class="nav-text">训练</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#具体过程"><span class="nav-number">1.3.1.</span> <span class="nav-text">具体过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#损失函数"><span class="nav-number">1.3.2.</span> <span class="nav-text">损失函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">1.4.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点"><span class="nav-number">1.5.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSD"><span class="nav-number">2.</span> <span class="nav-text">SSD</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#YoLo"><span class="nav-number">1.</span> <span class="nav-text">YoLo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创新"><span class="nav-number">1.1.</span> <span class="nav-text">创新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络结构"><span class="nav-number">1.2.</span> <span class="nav-text">网络结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练"><span class="nav-number">1.3.</span> <span class="nav-text">训练</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#具体过程"><span class="nav-number">1.3.1.</span> <span class="nav-text">具体过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#损失函数"><span class="nav-number">1.3.2.</span> <span class="nav-text">损失函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">1.4.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点"><span class="nav-number">1.5.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSD"><span class="nav-number">2.</span> <span class="nav-text">SSD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络结构-1"><span class="nav-number">2.1.</span> <span class="nav-text">网络结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#default-boxes-amp-feature-map-cell"><span class="nav-number">2.1.1.</span> <span class="nav-text">default boxes & feature map cell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模型flow"><span class="nav-number">2.1.2.</span> <span class="nav-text">模型flow</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练-1"><span class="nav-number">2.2.</span> <span class="nav-text">训练</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#损失函数-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#训练策略"><span class="nav-number">2.2.2.</span> <span class="nav-text">训练策略</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
