@@ -91,7 +91,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://github.com/ApolloAuto/apollo/raw/master/docs/specs/images/traffic_light/long.jpg">
 <meta property="og:image" content="https://github.com/ApolloAuto/apollo/raw/master/docs/specs/images/traffic_light/short.jpg">
-<meta property="og:updated_time" content="2018-02-26T06:14:55.000Z">
+<meta property="og:updated_time" content="2018-02-26T08:05:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="交通灯检测">
 <meta name="twitter:description" content="介绍Apollo 2.0提供基于camera的交通灯检测Traffic Light Perception，以下简称TLP。 一般的交通灯有三种状态：  Red Yellow Green">
@@ -368,7 +368,9 @@
 <li>Revise — Correct the color based on the time sequence</li>
 </ul>
 <h4 id="预处理模块"><a href="#预处理模块" class="headerlink" title="预处理模块"></a>预处理模块</h4><p>现实场景中，交通灯的变化频率较低，所以为了节约计算资源，没有必要对图像的每一帧都检测。同时，两个camera检测到的图片几乎是同步的，预处理模块要做的是同一个时刻只需要合理选取一个图片进入预处理流程。</p>
-<h5 id="预处理模块的Input-Output"><a href="#预处理模块的Input-Output" class="headerlink" title="预处理模块的Input/Output"></a>预处理模块的Input/Output</h5><p>预处理模块接受4路输入，Localization，高精地图，标定结果。</p>
+<p>入口函数位置：<a href="https://github.com/ApolloAuto/apollo/blob/9257dcf33e97a91a0e92922ab842dfff5c23e5f3/modules/perception/traffic_light/onboard/tl_preprocessor_subnode.cc" target="_blank" rel="noopener">apollo/modules/perception/traffic_light/onboard/tl_preprocessor_subnode.cc</a></p>
+<pre><code>bool TLPreprocessorSubnode::InitInternal()
+</code></pre><h5 id="预处理模块的Input-Output"><a href="#预处理模块的Input-Output" class="headerlink" title="预处理模块的Input/Output"></a>预处理模块的Input/Output</h5><p>预处理模块接受4路输入，Localization，高精地图，标定结果。</p>
 <p><strong>Input</strong></p>
 <ul>
 <li><p>camera采集的图片</p>
