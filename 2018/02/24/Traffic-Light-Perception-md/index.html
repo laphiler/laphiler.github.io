@@ -91,7 +91,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://github.com/ApolloAuto/apollo/raw/master/docs/specs/images/traffic_light/long.jpg">
 <meta property="og:image" content="https://github.com/ApolloAuto/apollo/raw/master/docs/specs/images/traffic_light/short.jpg">
-<meta property="og:updated_time" content="2018-02-26T05:04:53.000Z">
+<meta property="og:updated_time" content="2018-02-26T06:14:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="交通灯检测">
 <meta name="twitter:description" content="介绍Apollo 2.0提供基于camera的交通灯检测Traffic Light Perception，以下简称TLP。 一般的交通灯有三种状态：  Red Yellow Green">
@@ -368,12 +368,61 @@
 <li>Revise — Correct the color based on the time sequence</li>
 </ul>
 <h4 id="预处理模块"><a href="#预处理模块" class="headerlink" title="预处理模块"></a>预处理模块</h4><p>现实场景中，交通灯的变化频率较低，所以为了节约计算资源，没有必要对图像的每一帧都检测。同时，两个camera检测到的图片几乎是同步的，预处理模块要做的是同一个时刻只需要合理选取一个图片进入预处理流程。</p>
-<h5 id="预处理模块的Input-Output"><a href="#预处理模块的Input-Output" class="headerlink" title="预处理模块的Input/Output"></a>预处理模块的Input/Output</h5><p>camera采集的图片放到指定路径以文件形式存储，input从指定路径读取图片，完成预处理后输出到下一个处理流程。</p>
+<h5 id="预处理模块的Input-Output"><a href="#预处理模块的Input-Output" class="headerlink" title="预处理模块的Input/Output"></a>预处理模块的Input/Output</h5><p>预处理模块接受4路输入，Localization，高精地图，标定结果。</p>
 <p><strong>Input</strong></p>
+<ul>
+<li><p>camera采集的图片</p>
 <ul>
 <li>/apollo/sensor/camera/traffic/image_long</li>
 <li>/apollo/sensor/camera/traffic/image_short</li>
 </ul>
+</li>
+<li><p>Localization</p>
+<ul>
+<li>／tf</li>
+</ul>
+</li>
+<li>高精地图</li>
+<li>标定结果</li>
+</ul>
+<p><strong>Output</strong></p>
+<ul>
+<li>从camera选定的图片</li>
+<li>从世界坐标系到图片坐标中的交通灯边框</li>
+</ul>
+<p><strong>camera选择</strong></p>
+<p>交通灯在3D世界坐标系统中通过一个唯一ID和4个边框点标记</p>
+<pre><code>signal info:
+id {
+  id: &quot;xxx&quot;
+}
+boundary {
+  point { x: ...  y: ...  z: ...  }
+  point { x: ...  y: ...  z: ...  }
+  point { x: ...  y: ...  z: ...  }
+  point { x: ...  y: ...  z: ...  }
+}
+</code></pre><p>选出来的camera的数据结构，会被缓存在queue中</p>
+<pre><code>struct ImageLights {
+ CarPose pose;
+ CameraId camera_id;
+ double timestamp;
+ size_t num_signal;
+ ... other ...
+};
+</code></pre><h4 id="处理模块"><a href="#处理模块" class="headerlink" title="处理模块"></a>处理模块</h4><h5 id="处理模块的Input-Output"><a href="#处理模块的Input-Output" class="headerlink" title="处理模块的Input/Output"></a>处理模块的Input/Output</h5><p>处理模块的输入是预处理模块的输出，处理模块将输出结果发布到TLP的topic中，供后续流程使用。</p>
+<p><strong>Input</strong></p>
+<ul>
+<li>从camera选定的图片</li>
+<li>交通灯边框集合</li>
+</ul>
+<p><strong>Output</strong></p>
+<ul>
+<li>带有颜色标注的交通灯边框集合</li>
+</ul>
+<h5 id="边框校正Rectify"><a href="#边框校正Rectify" class="headerlink" title="边框校正Rectify"></a>边框校正Rectify</h5><p>交通灯识别的实现使用SSD模型，模型输入是ROI区域，输出是一个或多个交通灯的边框，如果CNN模型不能从ROI中检测到交通灯，那么后两步处理（Recognize，Revise）将会跳过。</p>
+<h5 id="交通灯识别Recognize"><a href="#交通灯识别Recognize" class="headerlink" title="交通灯识别Recognize"></a>交通灯识别Recognize</h5><p>交通灯识别使用典型的CNN分类任务，输入为交通灯边框集合，输出$4\times n$的vector，表示black, red, yellow, green的可能性。</p>
+<h5 id="交通灯颜色修正Revise"><a href="#交通灯颜色修正Revise" class="headerlink" title="交通灯颜色修正Revise"></a>交通灯颜色修正Revise</h5><p>当交通灯被识别为black或unknown时，Revise部分会通过查询保存的序列地图信息，来确认交通灯的颜色。</p>
 
       
     </div>
@@ -563,7 +612,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感知流程"><span class="nav-number">2.</span> <span class="nav-text">感知流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#预处理模块"><span class="nav-number">2.1.</span> <span class="nav-text">预处理模块</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#预处理模块的Input-Output"><span class="nav-number">2.1.1.</span> <span class="nav-text">预处理模块的Input/Output</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感知流程"><span class="nav-number">2.</span> <span class="nav-text">感知流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#预处理模块"><span class="nav-number">2.1.</span> <span class="nav-text">预处理模块</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#预处理模块的Input-Output"><span class="nav-number">2.1.1.</span> <span class="nav-text">预处理模块的Input/Output</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理模块"><span class="nav-number">2.2.</span> <span class="nav-text">处理模块</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#处理模块的Input-Output"><span class="nav-number">2.2.1.</span> <span class="nav-text">处理模块的Input/Output</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#边框校正Rectify"><span class="nav-number">2.2.2.</span> <span class="nav-text">边框校正Rectify</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#交通灯识别Recognize"><span class="nav-number">2.2.3.</span> <span class="nav-text">交通灯识别Recognize</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#交通灯颜色修正Revise"><span class="nav-number">2.2.4.</span> <span class="nav-text">交通灯颜色修正Revise</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
