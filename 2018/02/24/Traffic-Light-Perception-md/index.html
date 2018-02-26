@@ -91,7 +91,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://github.com/ApolloAuto/apollo/raw/master/docs/specs/images/traffic_light/long.jpg">
 <meta property="og:image" content="https://github.com/ApolloAuto/apollo/raw/master/docs/specs/images/traffic_light/short.jpg">
-<meta property="og:updated_time" content="2018-02-26T08:05:33.000Z">
+<meta property="og:updated_time" content="2018-02-26T09:37:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="交通灯检测">
 <meta name="twitter:description" content="介绍Apollo 2.0提供基于camera的交通灯检测Traffic Light Perception，以下简称TLP。 一般的交通灯有三种状态：  Red Yellow Green">
@@ -392,7 +392,8 @@
 <li>从camera选定的图片</li>
 <li>从世界坐标系到图片坐标中的交通灯边框</li>
 </ul>
-<p><strong>camera选择</strong></p>
+<p>预处理模块的核心处理函数<code>void TLPreprocessorSubnode::SubCameraImage</code>，根据代码注释，分成3步对该模块进行描述。</p>
+<p><strong>1. camera选择( which camera should be used )</strong></p>
 <p>交通灯在3D世界坐标系统中通过一个唯一ID和4个边框点标记</p>
 <pre><code>signal info:
 id {
@@ -412,7 +413,9 @@ boundary {
  size_t num_signal;
  ... other ...
 };
-</code></pre><h4 id="处理模块"><a href="#处理模块" class="headerlink" title="处理模块"></a>处理模块</h4><h5 id="处理模块的Input-Output"><a href="#处理模块的Input-Output" class="headerlink" title="处理模块的Input/Output"></a>处理模块的Input/Output</h5><p>处理模块的输入是预处理模块的输出，处理模块将输出结果发布到TLP的topic中，供后续流程使用。</p>
+</code></pre><p><strong>2. image同步和发布( sync image and publish data )</strong></p>
+<p><strong>3. 验证projection( verify lights projection based on image time )</strong></p>
+<h4 id="处理模块"><a href="#处理模块" class="headerlink" title="处理模块"></a>处理模块</h4><h5 id="处理模块的Input-Output"><a href="#处理模块的Input-Output" class="headerlink" title="处理模块的Input/Output"></a>处理模块的Input/Output</h5><p>处理模块的输入是预处理模块的输出，处理模块将输出结果发布到TLP的topic中，供后续流程使用。</p>
 <p><strong>Input</strong></p>
 <ul>
 <li>从camera选定的图片</li>
@@ -425,6 +428,10 @@ boundary {
 <h5 id="边框校正Rectify"><a href="#边框校正Rectify" class="headerlink" title="边框校正Rectify"></a>边框校正Rectify</h5><p>交通灯识别的实现使用SSD模型，模型输入是ROI区域，输出是一个或多个交通灯的边框，如果CNN模型不能从ROI中检测到交通灯，那么后两步处理（Recognize，Revise）将会跳过。</p>
 <h5 id="交通灯识别Recognize"><a href="#交通灯识别Recognize" class="headerlink" title="交通灯识别Recognize"></a>交通灯识别Recognize</h5><p>交通灯识别使用典型的CNN分类任务，输入为交通灯边框集合，输出$4\times n$的vector，表示black, red, yellow, green的可能性。</p>
 <h5 id="交通灯颜色修正Revise"><a href="#交通灯颜色修正Revise" class="headerlink" title="交通灯颜色修正Revise"></a>交通灯颜色修正Revise</h5><p>当交通灯被识别为black或unknown时，Revise部分会通过查询保存的序列地图信息，来确认交通灯的颜色。</p>
+<p><strong>参考来源</strong></p>
+<p>[1] <a href="https://github.com/ApolloAuto/apollo/blob/master/docs/specs/traffic_light.md" target="_blank" rel="noopener">Traffic Light Perception</a></p>
+<p>[2] <a href="https://mp.weixin.qq.com/s/IIRQoAnEVgTbcmpTI2jo4g" target="_blank" rel="noopener">PPT资料 | Apollo 自动驾驶感知技术
+</a></p>
 
       
     </div>
