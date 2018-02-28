@@ -91,7 +91,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://github.com/ApolloAuto/apollo/raw/master/docs/specs/images/traffic_light/long.jpg">
 <meta property="og:image" content="https://github.com/ApolloAuto/apollo/raw/master/docs/specs/images/traffic_light/short.jpg">
-<meta property="og:updated_time" content="2018-02-26T09:37:53.000Z">
+<meta property="og:updated_time" content="2018-02-28T02:47:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="交通灯检测">
 <meta name="twitter:description" content="介绍Apollo 2.0提供基于camera的交通灯检测Traffic Light Perception，以下简称TLP。 一般的交通灯有三种状态：  Red Yellow Green">
@@ -351,7 +351,7 @@
 <li>Black </li>
 <li>Unknown</li>
 </ul>
-<p>TLP模块通过提供车辆当前location，在高清地图上查询车辆前方的交通灯位置信息，交通灯位置在高清地图上用4个点来表示出boundary。Apollo 2.0使用长焦和广角两个camera来增强识别的范围，如下图，上一张图是长焦camera采集的图片，下一张图是广角camera采集的图片。</p>
+<p>TLP模块通过提供车辆当前location，在高清地图上查询车辆前方的交通灯位置信息，交通灯位置在高清地图上用4个点来表示出boundary。Apollo 2.0使用25mm长焦和6mm广角两个camera来增强识别的范围，如下图，上一张图是长焦camera采集的图片，下一张图是广角camera采集的图片。</p>
 <p><img src="https://github.com/ApolloAuto/apollo/raw/master/docs/specs/images/traffic_light/long.jpg" alt=""></p>
 <p><img src="https://github.com/ApolloAuto/apollo/raw/master/docs/specs/images/traffic_light/short.jpg" alt=""></p>
 <h3 id="感知流程"><a href="#感知流程" class="headerlink" title="感知流程"></a>感知流程</h3><p>整体交通灯感知分为两个部分。</p>
@@ -394,7 +394,7 @@
 </ul>
 <p>预处理模块的核心处理函数<code>void TLPreprocessorSubnode::SubCameraImage</code>，根据代码注释，分成3步对该模块进行描述。</p>
 <p><strong>1. camera选择( which camera should be used )</strong></p>
-<p>交通灯在3D世界坐标系统中通过一个唯一ID和4个边框点标记</p>
+<p>SubCameraImage主函数从25mm和6mm camera获得image信息并创建文件保存，接下来选择一个camera做后续操作(默认选长焦相机)。交通灯在3D世界坐标系统中通过一个唯一ID和4个边框点标记</p>
 <pre><code>signal info:
 id {
   id: &quot;xxx&quot;
@@ -473,6 +473,10 @@ boundary {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/28/segementation-opensource-md/" rel="prev" title="语义分割+视频分割 开源代码文献集合">
+                语义分割+视频分割 开源代码文献集合 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -553,7 +557,7 @@ boundary {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -566,7 +570,7 @@ boundary {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
